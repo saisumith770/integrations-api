@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model activity {
+  user_id String          @id
+  state   activity_state?
+  users   users           @relation(fields: [user_id], references: [user_id])
+}
+
+model feed {
+  user_id   String    @id
+  feed_id   String?   @unique
+  username  String?
+  message   String?
+  timestamp DateTime?
+}
+
+model integrations {
+  user_id       String
+  platform      String
+  accountName   String?
+  accountURL    String?
+  showOnProfile integrations_showOnProfile?
+  users         users                       @relation(fields: [user_id], references: [user_id])
+
+  @@id([user_id, platform])
+}
+
+model subscription_manager {
+  creator_id    String
+  viewer_id     String
+  subscribed_at DateTime?
+  creator_type  String?
+  viewer_type   String?
+
+  @@id([creator_id, viewer_id])
+  @@index([viewer_id], name: "fk_viewer")
+}
+
+model users {
+  user_id      String            @id
+  photo        String?
+  username     String            @unique
+  domain       String            @unique
+  password     String
+  created_at   DateTime
+  confirmed    users_confirmed?  @default(false)
+  phone        String?
+  email        String?           @unique
+  tags         String?
+  description  String?
+  viewers      Int?              @default(0)
+  subscription Int?              @default(0)
+  vods         Int?              @default(0)
+  channelInfo  users_channelInfo
+  state        users_state
+  activity     activity?
+  integrations integrations[]
+}
+
+model view_vod {
+  viewer_id String
+  vod_id    String
+
+  @@id([viewer_id, vod_id])
+}
+
+model vods {
+  user_id      String
+  vod_id       String
+  title        String?
+  thumbnail    String?
+  views        Int?
+  published_at DateTime?
+  type         String?
+  platform     String?
+  url          String?
+
+  @@id([user_id, vod_id])
+}
+
+enum activity_state {
+  offline
+  online
+  STREAMING
+  LISTENING
+  PLAYING
+  CHATTING
+}
+
+enum integrations_showOnProfile {
+  true
+  false
+}
+
+enum users_confirmed {
+  true
+  false
+}
+
+enum users_channelInfo {
+  banned
+  standard
+  premium
+}
+
+enum users_state {
+  offline
+  online
+  STREAMING
+  CHATTING
+  PLAYING
+  LISTENING
+}

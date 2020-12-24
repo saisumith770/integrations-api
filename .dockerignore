@@ -1,0 +1,17 @@
+#remove the vscode folder
+.vscode
+
+#ignore the dotenv files
+.env
+
+#ignore the ts files
+*.ts
+
+#ignore the config folder
+config
+
+#ignore VSCodeCounter files
+*.VSCodeCounter
+
+#ignore node_modules
+node_modules

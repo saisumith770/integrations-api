@@ -5,7 +5,7 @@ export async function createIntegrationInDatabase(app: App, user_id: string, pri
     var result: integrations = await prisma.integrations.create({
         data: {
             platform: app.platform,
-            accountName: app.platform,
+            accountName: app.accountName,
             accountURL: app.accountURL,
             showOnProfile: app.showOnProfile,
             access_token: app.access_token,

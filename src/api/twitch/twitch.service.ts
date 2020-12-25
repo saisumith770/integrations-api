@@ -24,10 +24,10 @@ POST https://id.twitch.tv/oauth2/token
 
 OAUTH Authorization code flow
 GET https://id.twitch.tv/oauth2/authorize
-    ?client_id=<your client ID>
+   ?client_id=<your client ID>
     &redirect_uri=<your registered redirect URI>
     &response_type=code
-    &scope=<space-separated list of scopes>
+    &scope=analytics:read:extensions analytics:read:games bits:read channel:manage:broadcast channel:manage:extensions channel:manage:redemptions channel:read:hype_train channel:read:redemptions channel:read:subscriptions clips:edit moderation:read user:edit user:edit:follows user:read:broadcast channel:moderate chat:edit chat:read whispers:read
 
 POST https://id.twitch.tv/oauth2/token
     ?client_id=<your client ID>

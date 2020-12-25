@@ -27,6 +27,8 @@ model integrations {
   accountName   String?
   accountURL    String?
   showOnProfile integrations_showOnProfile?
+  access_token  String?
+  refresh_token String?
   users         users                       @relation(fields: [user_id], references: [user_id])
 
   @@id([user_id, platform])

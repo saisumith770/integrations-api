@@ -9,7 +9,8 @@ import { PrismaClient } from '@prisma/client'
 import { Router as TwitchRouter } from './twitch/twitch.service'
 import { Router as YoutubeRouter } from './youtube/youtube.service'
 
-import { port } from '../config/environment_variables'
+import { port, access_token_secret, csrf_token_secret } from '../config/environment_variables'
+import jwt from 'jsonwebtoken'
 
 // tweaked the index.d.ts for express to accept PrismaClient in req
 
@@ -43,6 +44,25 @@ app.use((req, _, next) => {   //inject prisma into the req
     req.prisma = prisma
     next()
 })
+
+//validators
+app.use((req, res, next) => {
+    const { access_token } = req.cookies
+    jwt.verify(access_token, access_token_secret, (err: any, data: any) => {
+        if (!err) {
+            req.query.identifier = data.user_id
+            next()
+        }
+        else res.status(400).json({ status: "invalid access token was provided" })
+    })
+})
+app.use((req, res, next) => {
+    jwt.verify(req.body.csrf, csrf_token_secret, (err: any, data: any) => {
+        if (data.access_token === req.cookies.access_token && !err) next()
+        else res.status(400).json({ status: "invalid request" })
+    })
+})
+// app.use((req, _, next) => { req.query.identifier = req.body.user_id; next() })
 
 //all the Routers
 app.use('/twitch', TwitchRouter)

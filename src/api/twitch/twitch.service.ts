@@ -14,3 +14,8 @@ GET https://id.twitch.tv/oauth2/authorize
     &response_type=code
     &scope=analytics:read:extensions analytics:read:games bits:read channel:manage:broadcast channel:manage:extensions channel:manage:redemptions channel:read:hype_train channel:read:redemptions channel:read:subscriptions clips:edit moderation:read user:edit user:edit:follows user:read:broadcast channel:moderate chat:edit chat:read whispers:read
 */
+
+/*
+new feature ideas to implement:
+add custom video broadcasting to twitch from my platform
+*/

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { twitch_client_id, twitch_client_secret, twitch_redirect_uri } from "../../../config/environment_variables";
-import { Twitch_Invalid_Authorization_Code } from '../../Errors/twitch_auth_code_error';
+import { Twitch_Invalid_Authorization_Code } from '../../Errors/Twitch/twitch_auth_code_error';
 
 export async function ValidateToken(token: string) {
     const result = await axios.get('https://id.twitch.tv/oauth2/validate', {

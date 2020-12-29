@@ -3,8 +3,8 @@ import { clearIntegrationFromDatabase, createIntegrationInDatabase, updateTokens
 import { PrismaClient } from '@prisma/client'
 
 import { showOnProfile } from './interface'
-import { Twitch_Failed_To_Collect_Account_Information } from '../../Errors/twitch_unable_to_accquire_info'
-import { Twitch_Invalid_Token } from '../../Errors/twitch_invalid_tokens'
+import { Twitch_Failed_To_Collect_Account_Information } from '../../Errors/Twitch/twitch_unable_to_accquire_info'
+import { Twitch_Invalid_Token } from '../../Errors/Twitch/twitch_invalid_tokens'
 
 export async function disconnect(token: string, user_id: string, prisma: PrismaClient) {
     var twitchApiResponse = NeutralizeAccessToken(token)
@@ -24,7 +24,8 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
                             accountURL: `https://twitch.tv/${accountInfo.login}`,
                             showOnProfile: showOnProfile.false,
                             access_token: data.access_token,
-                            refresh_token: data.refresh_token
+                            refresh_token: data.refresh_token,
+                            platform_user_id: accountInfo.user_id
                         }, user_id, prisma)
                     } else new Twitch_Failed_To_Collect_Account_Information()
                 })

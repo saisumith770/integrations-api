@@ -15,9 +15,9 @@ Router.post('/connect', (req, res) => {
 })
 
 //disconnect an integration
-Router.post('/disconnect', (req, res) => {
+Router.delete('/disconnect', (req, res) => {
     if (req.query.identifier === req.body.user_id) {
-        disconnect(req.body.token, req.body.user_id, req.prisma)
+        disconnect((req.query.token as string), (req.query.user_id as string), req.prisma)
             .then(data => res.status(200).json({
                 data
             }))
@@ -26,7 +26,7 @@ Router.post('/disconnect', (req, res) => {
 })
 
 //update tokens
-Router.post('/update', (req, res) => {
+Router.put('/update', (req, res) => {
     if (req.query.identifier === req.body.user_id) {
         refresh(req.body.user_id, req.prisma)
             .then(() => res.json({ status: "successfully refreshed the token" }))
@@ -35,8 +35,8 @@ Router.post('/update', (req, res) => {
 })
 
 //check token validation
-Router.post('/validation', (req, res) => {
-    ValidateToken(req.body.token)
+Router.get('/validation', (req, res) => {
+    ValidateToken((req.query.token as string))
         .then(data => {
             if (data.status !== 401) res.json({ status: "the token is valid" })
             else res.status(401).json({ status: "the token is not valid" })

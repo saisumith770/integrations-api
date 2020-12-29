@@ -18,4 +18,7 @@ GET https://id.twitch.tv/oauth2/authorize
 /*
 new feature ideas to implement:
 add custom video broadcasting to twitch from my platform
+use pub sub to listen to chat and much more
+enable mobile deep links on the front end
+Embed the live stream on the front end
 */

@@ -14,7 +14,8 @@ export async function createIntegrationInDatabase(app: App, user_id: string, pri
                 connect: {
                     user_id
                 }
-            }
+            },
+            platform_user_id: app.platform_user_id
         }
     })
     return result

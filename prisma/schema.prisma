@@ -22,14 +22,15 @@ model feed {
 }
 
 model integrations {
-  user_id       String
-  platform      String
-  accountName   String?
-  accountURL    String?
-  showOnProfile integrations_showOnProfile?
-  access_token  String?
-  refresh_token String?
-  users         users                       @relation(fields: [user_id], references: [user_id])
+  user_id          String
+  platform         String
+  accountName      String?
+  accountURL       String?
+  showOnProfile    integrations_showOnProfile?
+  access_token     String?
+  refresh_token    String?
+  platform_user_id String?
+  users            users                       @relation(fields: [user_id], references: [user_id])
 
   @@id([user_id, platform])
 }

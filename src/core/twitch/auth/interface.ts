@@ -5,6 +5,7 @@ export interface App {
     showOnProfile: showOnProfile
     access_token: string
     refresh_token: string
+    platform_user_id: string
 }
 
 export enum showOnProfile {

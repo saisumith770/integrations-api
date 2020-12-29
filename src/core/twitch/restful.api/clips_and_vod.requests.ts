@@ -21,6 +21,13 @@ interface getVods {
     id: string
     user_id: string
     game_id: string
+    after?: string
+    before?: string
+    first?: string
+    language?: string
+    period?: string
+    sort?: string
+    type?: string
 }
 
 interface getAllStreams {

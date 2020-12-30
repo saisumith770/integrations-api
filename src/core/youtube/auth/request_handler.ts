@@ -2,6 +2,18 @@ import axios from 'axios'
 import { youtube_redirect_uri, youtube_client_secret, youtube_client_id } from '../../../config/environment_variables'
 import { Youtube_Invalid_Authorization_Code } from '../../Errors/Youtube/youtube_auth_code_error'
 
+export async function RetrieveChannelInfo(access_token: string) {
+    return await axios.get('https://www.googleapis.com/youtube/v3/channels', {
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        },
+        params: {
+            part: 'id,snippet',
+            mine: 'true'
+        }
+    }).then(data => (data.data))
+}
+
 export async function ExchangeAuthCode_AccessToken(code: string) {
     return await axios.post(`https://oauth2.googleapis.com/token`, null, {
         params: {

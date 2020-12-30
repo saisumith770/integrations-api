@@ -1,5 +1,5 @@
 import express from 'express'
-import { connect, disconnect, refresh, ValidateToken } from '../../../index'
+import { connect_Twitch as connect, disconnect_Twitch as disconnect, refresh_Twitch as refresh, ValidateToken } from '../../../index'
 
 export const Router = express.Router()
 

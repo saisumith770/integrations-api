@@ -3,15 +3,18 @@ import { PrismaClient } from '@prisma/client'
 import { ExchangeAuthCode_AccessToken, NeutralizeAccessToken, RefreshToken, RetrieveChannelInfo } from './request_handler'
 import { clearIntegrationFromDatabase, createIntegrationInDatabase, updateTokens } from '../../database.mutation'
 
-import { Youtube_Failed_To_Collect_Account_Information } from '../../Errors/Youtube/youtube_unable_to_accquire_info'
-import { Youtube_Invalid_Token } from '../../Errors/Youtube/youtube_invalid_tokens'
+import { Discord_Failed_To_Collect_Account_Information } from '../../Errors/Discord/discord_unable_to_accquire_info'
+import { Discord_Invalid_Token } from '../../Errors/Discord/discord_invalid_tokens'
 
-import { showOnProfile } from './interface'
+enum showOnProfile {
+    true = "true",
+    false = "false"
+}
 
 export async function disconnect(token: string, user_id: string, prisma: PrismaClient) {
-    var youtubeApiResponse = NeutralizeAccessToken(token)
+    var twitchApiResponse = NeutralizeAccessToken(token)
     var prismaDatabaseResponse = clearIntegrationFromDatabase('youtube', user_id, prisma)
-    return Promise.all([youtubeApiResponse, prismaDatabaseResponse])
+    return Promise.all([twitchApiResponse, prismaDatabaseResponse])
 }
 
 export async function connect(code: string, user_id: string, prisma: PrismaClient) {
@@ -22,20 +25,20 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
                     if (accountInfo.status !== 401) {
                         createIntegrationInDatabase({
                             platform: 'youtube',
-                            accountName: accountInfo.items.snippet.title,
-                            accountURL: `https://www.youtube.com/channel/${accountInfo.items.id}`,
+                            accountName: accountInfo.username,
+                            accountURL: ``,
                             showOnProfile: showOnProfile.false,
                             access_token: data.access_token,
                             refresh_token: data.refresh_token,
-                            platform_user_id: accountInfo.items.id
+                            platform_user_id: accountInfo.id
                         }, user_id, prisma)
-                    } else new Youtube_Failed_To_Collect_Account_Information()
+                    } else new Discord_Failed_To_Collect_Account_Information()
                 })
-                .catch(() => new Youtube_Failed_To_Collect_Account_Information())
+                .catch(() => new Discord_Failed_To_Collect_Account_Information())
         })
 }
 
-export async function refresh(user_id: string, prisma: PrismaClient) {
+export async function refresh(user_id: string, scope: string, prisma: PrismaClient) {
     prisma.integrations.findFirst({
         where: {
             user_id
@@ -45,11 +48,11 @@ export async function refresh(user_id: string, prisma: PrismaClient) {
         }
     })
         .then(data => {
-            RefreshToken(data!.refresh_token!)
+            RefreshToken(data!.refresh_token!, scope)
                 .then(({ access_token, refresh_token }) => {
                     updateTokens(user_id, 'youtube', { access_token, refresh_token }, prisma)
                 })
-                .catch(() => new Youtube_Invalid_Token())
+                .catch(() => new Discord_Invalid_Token())
         })
-        .catch(() => new Youtube_Invalid_Token())
+        .catch(() => new Discord_Invalid_Token())
 }

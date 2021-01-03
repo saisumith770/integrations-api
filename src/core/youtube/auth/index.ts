@@ -19,7 +19,7 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
         .then(data => {
             RetrieveChannelInfo(data.access_token)
                 .then(accountInfo => {
-                    if (accountInfo.status !== 401) {
+                    if (!accountInfo.status) {
                         createIntegrationInDatabase({
                             platform: 'youtube',
                             accountName: accountInfo.items.snippet.title,

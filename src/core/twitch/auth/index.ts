@@ -17,7 +17,7 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
         .then(data => {
             ValidateToken(data.access_token)
                 .then(accountInfo => {
-                    if (accountInfo.status !== 401) {
+                    if (!accountInfo.status) {
                         createIntegrationInDatabase({
                             platform: 'twitch',
                             accountName: accountInfo.login,

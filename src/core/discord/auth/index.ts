@@ -13,7 +13,7 @@ enum showOnProfile {
 
 export async function disconnect(token: string, user_id: string, prisma: PrismaClient) {
     var twitchApiResponse = NeutralizeAccessToken(token)
-    var prismaDatabaseResponse = clearIntegrationFromDatabase('youtube', user_id, prisma)
+    var prismaDatabaseResponse = clearIntegrationFromDatabase('discord', user_id, prisma)
     return Promise.all([twitchApiResponse, prismaDatabaseResponse])
 }
 
@@ -22,11 +22,11 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
         .then(data => {
             RetrieveChannelInfo(data.access_token)
                 .then(accountInfo => {
-                    if (accountInfo.status !== 401) {
+                    if (!accountInfo.status) {
                         createIntegrationInDatabase({
-                            platform: 'youtube',
+                            platform: 'discord',
                             accountName: accountInfo.username,
-                            accountURL: ``,
+                            accountURL: `https://discord.com`,
                             showOnProfile: showOnProfile.false,
                             access_token: data.access_token,
                             refresh_token: data.refresh_token,
@@ -50,7 +50,7 @@ export async function refresh(user_id: string, scope: string, prisma: PrismaClie
         .then(data => {
             RefreshToken(data!.refresh_token!, scope)
                 .then(({ access_token, refresh_token }) => {
-                    updateTokens(user_id, 'youtube', { access_token, refresh_token }, prisma)
+                    updateTokens(user_id, 'discord', { access_token, refresh_token }, prisma)
                 })
                 .catch(() => new Discord_Invalid_Token())
         })

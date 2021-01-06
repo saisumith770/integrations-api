@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { connect_Youtube as connect, refresh_Youtube as refresh, disconnect_Youtube as disconnect, RetrieveChannelInfo } from '../../../index'
+import { connect_Youtube as connect, refresh_Youtube as refresh, disconnect_Youtube as disconnect, RetrieveChannelInfo_Youtube as RetrieveChannelInfo } from '../../../index'
 
 export const Router = express.Router()
 

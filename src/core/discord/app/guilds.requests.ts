@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function getGuild(access_token: string) {
+export async function getGuilds(access_token: string) {
     return await axios.get('https://discord.com/api/users/@me/guilds', {
         headers: {
             Authorization: `Bearer ${access_token}`
@@ -14,4 +14,12 @@ export async function removeGuild(guild_id: string, access_token: string) {
             Authorization: `Bearer ${access_token}`
         }
     }).then(data => (data.data))
+}
+
+export async function getGuildInvite(guild_id: string, access_token: string) {
+    return await axios.get(`https://discord.com/api/guilds/${guild_id}/invites`, {
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        }
+    }).then(data => (`https://discord.gg/${data.data[0].code}`))
 }

@@ -14,7 +14,8 @@ export {
 
 export {
     ExchangeAuthCode_AccessToken as ExchangeAuthCode_AccessToken_Youtube,
-    RetrieveChannelInfo, RefreshToken as RefreshToken_Youtube,
+    RetrieveChannelInfo as RetrieveChannelInfo_Youtube,
+    RefreshToken as RefreshToken_Youtube,
     NeutralizeAccessToken as NeutralizeAccessToken_Youtube
 } from './core/youtube/auth/request_handler'
 
@@ -23,3 +24,16 @@ export {
     disconnect as disconnect_Youtube,
     refresh as refresh_Youtube
 } from './core/youtube/auth/index'
+
+export {
+    connect as connect_Discord,
+    disconnect as disconnect_Discord,
+    refresh as refresh_Discord
+} from './core/discord/auth/index'
+
+export {
+    ExchangeAuthCode_AccessToken as ExchangeAuthCode_AccessToken_Discord,
+    NeutralizeAccessToken as NeutralizeAccessToken_Discord,
+    RetrieveChannelInfo as RetrieveChannelInfo_Discord,
+    RefreshToken as RefreshToken_Discord
+} from './core/discord/auth/request_handler'

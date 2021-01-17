@@ -46,23 +46,22 @@ app.use((req, _, next) => {   //inject prisma into the req
 })
 
 //validators
-// app.use((req, res, next) => {
-//     const { access_token } = req.cookies
-//     jwt.verify(access_token, access_token_secret, (err: any, data: any) => {
-//         if (!err) {
-//             req.query.identifier = data.user_id
-//             next()
-//         }
-//         else res.status(400).json({ status: "invalid access token was provided" })
-//     })
-// })
-// app.use((req, res, next) => {
-//     jwt.verify(req.body.csrf, csrf_token_secret, (err: any, data: any) => {
-//         if (data.access_token === req.cookies.access_token && !err) next()
-//         else res.status(400).json({ status: "invalid request" })
-//     })
-// })
-app.use((req, _, next) => { req.query.identifier = req.body.user_id; next() })
+app.use((req, res, next) => {
+    const { access_token } = req.cookies
+    jwt.verify(access_token, access_token_secret, (err: any, data: any) => {
+        if (!err) {
+            req.query.identifier = data.user_id
+            next()
+        }
+        else res.status(400).json({ status: "invalid access token was provided" })
+    })
+})
+app.use((req, res, next) => {
+    jwt.verify(req.body.csrf, csrf_token_secret, (err: any, data: any) => {
+        if (data.access_token === req.cookies.access_token && !err) next()
+        else res.status(400).json({ status: "invalid request" })
+    })
+})
 
 //all the Routers
 app.use('/twitch', TwitchRouter)

@@ -1,8 +1,8 @@
 import { PrismaClient, integrations } from "@prisma/client";
 import { App, BatchPayload, UpdatePayload } from '../twitch/auth/interface'
 
-export async function createIntegrationInDatabase(app: App, user_id: string, prisma: PrismaClient): Promise<integrations> {
-    var result: integrations = await prisma.integrations.create({
+export async function createIntegrationInDatabase(app: App, user_id: string, prisma: PrismaClient): Promise<Partial<integrations>> {
+    var result: Partial<integrations> = await prisma.integrations.create({
         data: {
             platform: app.platform,
             accountName: app.accountName,
@@ -16,6 +16,12 @@ export async function createIntegrationInDatabase(app: App, user_id: string, pri
                 }
             },
             platform_user_id: app.platform_user_id
+        },
+        select: {
+            accountName: true,
+            accountURL: true,
+            platform: true,
+            showOnProfile: true
         }
     })
     return result

@@ -36,6 +36,37 @@ npm run dev
 
 ---
 
+## Twitch Endpoints `` /twitch ``
+### Auth `` /auth ``
+```
+/connect :- provide authorization code and user id
+/disconnect :- provide access token and user id
+/update :- provide user id
+/validation :- provide access token
+```
+
+### App `` /extension ``
+```
+/subscribe :- provide hub topic, twitch_user_id, access token
+/unsubscribe :- provide hub topic, twitch user id, access token
+```
+
+## Youtube Endpoints `` /youtube ``
+### Auth `` /auth ``
+```
+
+```
+
+### App `` /app ``
+```
+
+```
+
+## Upcoming
+- Discord integration 
+- Spotify integration
+- Twitter integration
+
 ## Contribute
 
 [![Join Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/n9rVDZh)

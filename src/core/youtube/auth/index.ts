@@ -8,10 +8,15 @@ import { Youtube_Invalid_Token } from '../../Errors/Youtube/youtube_invalid_toke
 
 import { showOnProfile } from './interface'
 
-export async function disconnect(token: string, user_id: string, prisma: PrismaClient) {
-    var youtubeApiResponse = NeutralizeAccessToken(token)
-    var prismaDatabaseResponse = clearIntegrationFromDatabase('youtube', user_id, prisma)
-    return Promise.all([youtubeApiResponse, prismaDatabaseResponse])
+import { getToken } from '../../utils'
+
+export async function disconnect(user_id: string, prisma: PrismaClient) {
+    return await getToken(user_id, 'youtube', prisma)
+        .then(data => {
+            var youtubeApiResponse = NeutralizeAccessToken(data?.access_token as string)
+            var prismaDatabaseResponse = clearIntegrationFromDatabase('youtube', user_id, prisma)
+            return Promise.all([youtubeApiResponse, prismaDatabaseResponse])
+        })
 }
 
 export async function connect(code: string, user_id: string, prisma: PrismaClient) {
@@ -38,7 +43,8 @@ export async function connect(code: string, user_id: string, prisma: PrismaClien
 export async function refresh(user_id: string, prisma: PrismaClient) {
     prisma.integrations.findFirst({
         where: {
-            user_id
+            user_id,
+            platform: 'youtube'
         },
         select: {
             refresh_token: true

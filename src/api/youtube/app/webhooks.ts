@@ -10,7 +10,8 @@ Router.put('/subscribe', (req, res) => {
         "hub.topic": req.body.topic,
         "hub.lease_seconds": req.body.lease_seconds
     })
-    res.json({ status: "proceed with regular activity" })
+        .then(() => res.json({ status: "proceed with regular activity" }))
+        .catch(() => res.status(500).json({ status: "intenal server error" }))
 })
 
 Router.delete('/unsubscribe', (req, res) => {
@@ -19,5 +20,6 @@ Router.delete('/unsubscribe', (req, res) => {
         "hub.topic": req.body.topic,
         "hub.lease_seconds": req.body.lease_seconds
     })
-    res.json({ status: "proceed with regular activity" })
+        .then(() => res.json({ status: "proceed with regular activity" }))
+        .catch(() => res.status(500).json({ status: "intenal server error" }))
 })

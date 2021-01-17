@@ -6,10 +6,15 @@ import { showOnProfile } from './interface'
 import { Twitch_Failed_To_Collect_Account_Information } from '../../Errors/Twitch/twitch_unable_to_accquire_info'
 import { Twitch_Invalid_Token } from '../../Errors/Twitch/twitch_invalid_tokens'
 
-export async function disconnect(token: string, user_id: string, prisma: PrismaClient) {
-    var twitchApiResponse = NeutralizeAccessToken(token)
-    var prismaDatabaseResponse = clearIntegrationFromDatabase('twitch', user_id, prisma)
-    return Promise.all([twitchApiResponse, prismaDatabaseResponse])
+import { getToken } from '../../utils'
+
+export async function disconnect(user_id: string, prisma: PrismaClient) {
+    return await getToken(user_id, 'twitch', prisma)
+        .then(data => {
+            var twitchApiResponse = NeutralizeAccessToken(data?.access_token as string)
+            var prismaDatabaseResponse = clearIntegrationFromDatabase('twitch', user_id, prisma)
+            return Promise.all([twitchApiResponse, prismaDatabaseResponse])
+        })
 }
 
 export async function connect(code: string, user_id: string, prisma: PrismaClient) {

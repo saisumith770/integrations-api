@@ -5,7 +5,7 @@ import { Router as AppRouter } from './app'
 export const Router = express.Router()
 
 Router.use('/auth', AuthRouter)
-Router.use('/extension', AppRouter)
+Router.use('/app', AppRouter)
 
 /*
 GET https://id.twitch.tv/oauth2/authorize
